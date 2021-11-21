@@ -4,7 +4,7 @@ import "video.js/dist/video-js.css";
 import "@videojs/http-streaming";
 
 interface VideoJsProps {
-  options: Object;
+  options: object;
   onReady: (player: any) => void;
 }
 
@@ -21,16 +21,13 @@ export const VideoJs: React.FC<VideoJsProps> = (props) => {
 
       const player = (playerRef.current = videojs(videoElement, options, () => {
         console.log("player is ready");
-        onReady && onReady(player);
+        if (onReady) {
+          onReady(player);
+        }
       }));
-    } else {
-      // you can update player here [update player through props]
-      // const player = playerRef.current;
-      // player.autoplay(options.autoplay);
-      // player.src(options.sources);
     }
-  }, [options, videoRef]);
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   // Dispose the Video.js player when the functional component unmounts
   useEffect(() => {
     const player = playerRef.current;
@@ -43,7 +40,5 @@ export const VideoJs: React.FC<VideoJsProps> = (props) => {
     };
   }, [playerRef]);
 
-  return (
-      <video ref={videoRef} className="video-js vjs-big-play-centered" />
-  );
+  return <video ref={videoRef} className="video-js vjs-big-play-centered" />;
 };
