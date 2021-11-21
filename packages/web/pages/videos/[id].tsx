@@ -20,6 +20,7 @@ const Video = ({
     autoplay: true,
     controls: true,
     responsive: true,
+    fluid: true,
     sources: [
       {
         src: `http://localhost:5600/video/${id}`,
