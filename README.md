@@ -14,4 +14,6 @@ npm run dev
 ```
 
 
+# Screenshots 
+<img src="./screenshots/desktop.png" />
 
