@@ -1,5 +1,6 @@
 import { ClipboardIcon, PlusIcon } from "@heroicons/react/outline";
 import { FormEvent, useRef } from "react";
+import { apiUrl } from "../config/api";
 import styles from "../styles/Navbar.module.css";
 
 interface NavbarProps {
@@ -11,7 +12,7 @@ export const Navbar: React.FC<NavbarProps> = ({ fetchFolders }) => {
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const data = { magnetLink: inputRef.current?.value };
-    const resp = await fetch("http://localhost:5600/video", {
+    const resp = await fetch(`${apiUrl}/video`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
