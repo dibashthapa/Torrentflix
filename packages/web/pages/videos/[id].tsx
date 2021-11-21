@@ -1,6 +1,7 @@
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { useRef } from "react";
 import { VideoJs } from "../../components/VideoJs";
+import { apiUrl } from "../../config/api";
 type VideoJsOptions = {
   autoplay: boolean;
   controls: boolean;
@@ -23,7 +24,7 @@ const Video = ({
     fluid: true,
     sources: [
       {
-        src: `http://localhost:5600/video/${id}`,
+        src: `${apiUrl}/video/${id}`,
         type: "video/mp4",
       },
     ],
