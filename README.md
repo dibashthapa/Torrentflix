@@ -1,3 +1,7 @@
+# Screenshots
+
+<img src="./screenshots/desktop.png" />
+
 # Installation
 
 ## Server
@@ -15,10 +19,6 @@ cd packages/web
 npm install
 npm run dev
 ```
-
-# Screenshots
-
-<img src="./screenshots/desktop.png" />
 
 # Features
 
