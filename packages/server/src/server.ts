@@ -12,6 +12,6 @@ io.on("connection", function (socket: Socket) {
   });
 });
 
-httpServer.listen(5600, function () {
+httpServer.listen(5500, function () {
   console.log("server is running");
 });

@@ -3,8 +3,8 @@
   "version": "1.0.2",
   "description": "Online streaming site to stream downloaded torrent videos online",
   "scripts": {
-    "start": "ts-node src/app.ts",
-    "watch": "nodemon src/app.ts"
+    "start": "ts-node src/server.ts",
+    "watch": "nodemon src/server.ts"
   },
   "dependencies": {
     "@types/bull": "^3.15.5",
