@@ -38,7 +38,7 @@ const Home: NextPage = () => {
     const wsUrl =
       process.env.NODE_ENV === "production"
         ? `wss://${apiConfig.host}`
-        : `wss://${apiConfig.host}`;
+        : `ws://${apiConfig.host}`;
     const newSocket = io(wsUrl, {
       transports: ["websocket"],
     });

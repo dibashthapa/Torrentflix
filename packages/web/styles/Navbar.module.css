@@ -11,11 +11,11 @@
 }
 
 .menuContainer {
-	@apply max-w-7xl w-full flex justify-center
+  @apply max-w-7xl w-full flex justify-center;
 }
 
 .form {
-	@apply w-full
+  @apply w-full;
 }
 
 .title {
