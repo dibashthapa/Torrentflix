@@ -50,7 +50,9 @@ const Home: NextPage = () => {
     });
     fetchFolders();
 
-    return () => newSocket.close();
+    return () => {
+      newSocket.disconnect();
+    };
   }, []);
   return (
     <div>
