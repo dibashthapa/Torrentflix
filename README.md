@@ -1,19 +1,33 @@
-# Installation 
-## Server 
-```sh 
+# Installation
+
+## Server
+
+```sh
 cd packages/server
 npm install
 npm run watch
 ```
 
-## Client 
+## Client
+
 ```sh
-cd packages/web 
+cd packages/web
 npm install
 npm run dev
 ```
 
+# Screenshots
 
-# Screenshots 
 <img src="./screenshots/desktop.png" />
 
+# Features
+
+- Can download videos from magnet link
+- Stream downloaded videos
+- Realtime download progress for downloading videos
+
+# TODO
+
+- [ ] Error Page for videos
+- [ ] Use `ffmpeg` to stream videos
+- [ ] Show videos according to the user
