@@ -1,0 +1,7 @@
+.main {
+  @apply flex justify-center sm:w-full;
+}
+
+.container {
+  @apply lg:max-w-7xl sm:max-w-full my-3 bg-gray-100 w-full flex items-center py-2 pl-5 rounded-sm;
+}

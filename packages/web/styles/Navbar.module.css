@@ -1,0 +1,35 @@
+.navContainer {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  height: 80px;
+
+  @apply border-dashed border-b-2 flex items-center justify-center bg-gray-50 space-x-2;
+}
+
+.menuContainer {
+	@apply max-w-7xl w-full flex justify-center
+}
+
+.form {
+	@apply w-full
+}
+
+.title {
+  @apply flex ml-5 w-2/6 items-center;
+}
+
+.menu {
+  @apply flex w-full justify-end mr-4;
+}
+.inputContainer {
+  @apply flex border-gray-100 border-2 items-center bg-white rounded-sm w-3/6;
+  padding: 5px 10px;
+}
+
+.search {
+  @apply h-8 rounded-sm border-transparent focus:outline-none focus:border-opacity-0 w-full;
+}

@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.video-player {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+}
