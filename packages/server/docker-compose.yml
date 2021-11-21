@@ -1,0 +1,49 @@
+version: "3.1"
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: api
+    container_name: api
+    restart: unless-stopped
+    env_file:
+      - api.env
+    links:
+      - redis
+
+  db:
+    image: postgres:13.5
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: torrentflix
+      POSTGRES_USER: test
+
+    ports:
+      - 5432:5432
+
+  proxy:
+    build:
+      context: ./nginx
+    volumes:
+      - static_data:/vol/media
+    ports:
+      - "8080:8080"
+    links:
+      - redis
+      - api
+    depends_on:
+      - api
+
+  redis:
+    image: redis:5
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  static_data:
