@@ -31,3 +31,6 @@ npm run dev
 - [ ] Error Page for videos
 - [ ] Use `ffmpeg` to stream videos
 - [ ] Show videos according to the user
+- [ ] Add validation to check magnet links
+- [ ] User SignIn / Registration page
+- [ ] Make site responsive for mobile
