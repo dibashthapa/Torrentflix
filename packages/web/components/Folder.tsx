@@ -1,6 +1,7 @@
 import { FolderIcon, TrashIcon } from "@heroicons/react/outline";
 import styles from "../styles/Folder.module.css";
 import Link from "next/link";
+import { apiUrl } from "../config/api";
 
 export type Status = "Downloaded" | "Pending";
 interface FolderProps {
@@ -21,7 +22,7 @@ export const Folder: React.FC<FolderProps> = ({
   status,
 }) => {
   const deleteVideoById = async () => {
-    await fetch(`http://localhost:5600/video/${id}`, {
+    await fetch(`${apiUrl}/video/${id}`, {
       method: "DELETE",
     });
     fetchFolders();

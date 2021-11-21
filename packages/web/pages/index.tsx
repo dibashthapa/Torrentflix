@@ -35,7 +35,10 @@ const Home: NextPage = () => {
   };
 
   useEffect(() => {
-    const wsUrl = `ws://${apiConfig.host}`;
+    const wsUrl =
+      process.env.NODE_ENV === "production"
+        ? `wss://${apiConfig.host}`
+        : `wss://${apiConfig.host}`;
     const newSocket = io(wsUrl, {
       transports: ["websocket"],
     });
