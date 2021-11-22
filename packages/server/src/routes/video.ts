@@ -1,3 +1,4 @@
+import { JobId } from "bull";
 import { randomUUID } from "crypto";
 import express, { NextFunction, Request, Response } from "express";
 import { createReadStream, statSync } from "fs";
@@ -17,15 +18,11 @@ const queueMiddleware = async (
   const re = /dn=(?<link>.+?)\&/;
   const match = magnetLink.match(re);
   const fileName = decodeURI(match?.groups?.link as string);
-  // const dn = magnetLink.slice(
-  //   magnetLink.indexOf("dn=") + 3,
-  //   magnetLink.indexOf("&tr")
-  // );
-  // const fileName = dn.split("+").join("-");
   const hashedValue = randomUUID();
-  torrentQueue.add({ magnetLink, fileName, hashedValue });
+  const job = await torrentQueue.add({ magnetLink, fileName, hashedValue });
   res.locals.magnetLink = magnetLink;
   res.locals.fileName = fileName;
+  res.locals.jobId = job.id;
   res.locals.hash = hashedValue;
   next();
 };
@@ -53,18 +50,25 @@ router.get("/progress", async function (_: Request, res: Response) {
 
 router.delete("/:id", async function (req: Request, res: Response) {
   const id = Number(req.params.id);
+  const video = await Video.findOne({ id });
   await Video.delete({ id });
+  const jobId = video?.jobId as JobId;
+  const job = await torrentQueue.getJob(jobId);
+  if (job?.isActive) {
+    job.discard();
+  }
   res.json("Successfully deleted");
 });
 
 router.post("/", queueMiddleware, async function (req: Request, res: Response) {
   console.log(req.body);
   try {
-    const { fileName, magnetLink, hash } = res.locals;
+    const { fileName, magnetLink, hash, jobId } = res.locals;
     const filePath = join(config.rootVideoPath, "encodedVideos", fileName);
     const video = Video.create({
       filename: fileName,
       hash,
+      jobId,
       path: filePath,
       magnetLink: magnetLink,
     });

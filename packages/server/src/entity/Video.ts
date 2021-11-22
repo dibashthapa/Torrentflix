@@ -24,6 +24,9 @@ export class Video extends BaseEntity {
   @Column({ nullable: true, default: "Pending" })
   status: string;
 
+  @Column({ nullable: true })
+  jobId: string;
+
   @Column()
   magnetLink: string;
 
