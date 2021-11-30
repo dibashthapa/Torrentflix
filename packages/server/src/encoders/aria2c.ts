@@ -6,8 +6,13 @@ import { DoneCallback, Job } from "bull";
 import { wrapProcessor } from "../utils/wrapProcessor";
 
 const encodeMagnetToVideo = (job: Job, done: DoneCallback) => {
-  const videosPath = join(config.rootVideoPath as string, "encodedVideos");
   const { magnetLink, fileName, hashedValue } = job.data;
+  const videosPath = join(
+    config.rootVideoPath as string,
+    "encodedVideos",
+    fileName
+  );
+  const filePath = join(videosPath, fileName);
   const args =
     `-s 10 -x 16 --show-console-readout=false --console-log-level=warn --summary-interval=5 --dir=${videosPath} --index-out=1=${fileName} --file-allocation=none --seed-time=0 ${magnetLink}`.split(
       " "
@@ -24,7 +29,7 @@ const encodeMagnetToVideo = (job: Job, done: DoneCallback) => {
     console.log("percentage", percentage);
     job.progress(percentage);
     if (percentage.includes("99")) {
-      done();
+      done(null, { filePath, hashedValue });
     }
   });
 
@@ -32,7 +37,6 @@ const encodeMagnetToVideo = (job: Job, done: DoneCallback) => {
     console.log(`Error Occured ${err}`);
   });
   aria2c.on("exit", function () {
-    const filePath = join(videosPath, fileName);
     done(null, { filePath, hashedValue });
   });
 };

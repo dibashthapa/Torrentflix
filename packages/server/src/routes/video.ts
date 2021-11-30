@@ -1,7 +1,7 @@
 import { JobId } from "bull";
 import { randomUUID } from "crypto";
 import express, { NextFunction, Request, Response } from "express";
-import { createReadStream, statSync } from "fs";
+import { createReadStream, existsSync, statSync } from "fs";
 import { join } from "path/posix";
 import { config } from "../config";
 import { Video } from "../entity/Video";
@@ -53,6 +53,7 @@ router.delete("/:id", async function (req: Request, res: Response) {
   if (job?.isActive) {
     await killJob(torrentQueue, job.id).catch((err) => console.log(err));
   }
+  await Video.delete({ id });
   res.json("Successfully deleted");
 });
 
@@ -83,6 +84,7 @@ router.get("/:id", async (req: Request, res: Response) => {
   });
   if (!video) return res.status(404).json("Video not found");
   const vidPath = join(video.path, video.filename);
+  if (!existsSync(vidPath)) return res.status(404).json("Video doesnt exist");
 
   const stat = statSync(vidPath);
   const fileSize = stat.size;
