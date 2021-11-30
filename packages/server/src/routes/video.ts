@@ -6,6 +6,7 @@ import { join } from "path/posix";
 import { config } from "../config";
 import { Video } from "../entity/Video";
 import { torrentQueue } from "../queues/torrentQueue";
+import { killJob } from "../utils/killJob";
 
 const router = express.Router();
 
@@ -19,21 +20,17 @@ const queueMiddleware = async (
   const match = magnetLink.match(re);
   const fileName = decodeURI(match?.groups?.link as string);
   const hashedValue = randomUUID();
-  const job = await torrentQueue.add({ magnetLink, fileName, hashedValue });
+  const job = await torrentQueue.add(
+    { magnetLink, fileName, hashedValue },
+    { removeOnFail: true, removeOnComplete: true, attempts: 0, lifo: true }
+  );
+
   res.locals.magnetLink = magnetLink;
   res.locals.fileName = fileName;
   res.locals.jobId = job.id;
   res.locals.hash = hashedValue;
   next();
 };
-router.get("/segment", async function (_: Request, res: Response) {
-  const id = "Foundation.S01E10.720p.WEB.x265-MiNX%5BTGx%5D";
-  const dirPath = join(config.rootVideoPath as string, "encodedVideos");
-  const vidDir = join(dirPath, id, "playlist.m3u8");
-
-  const fileStream = createReadStream(vidDir);
-  fileStream.pipe(res);
-});
 
 router.get("/", async function (_: Request, res: Response) {
   const videos = await Video.find({
@@ -51,17 +48,15 @@ router.get("/progress", async function (_: Request, res: Response) {
 router.delete("/:id", async function (req: Request, res: Response) {
   const id = Number(req.params.id);
   const video = await Video.findOne({ id });
-  await Video.delete({ id });
   const jobId = video?.jobId as JobId;
   const job = await torrentQueue.getJob(jobId);
   if (job?.isActive) {
-    job.discard();
+    await killJob(torrentQueue, job.id).catch((err) => console.log(err));
   }
   res.json("Successfully deleted");
 });
 
 router.post("/", queueMiddleware, async function (req: Request, res: Response) {
-  console.log(req.body);
   try {
     const { fileName, magnetLink, hash, jobId } = res.locals;
     const filePath = join(config.rootVideoPath, "encodedVideos", fileName);
