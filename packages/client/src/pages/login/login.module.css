@@ -1,0 +1,35 @@
+.wrapper {
+        width:100%;
+        display:flex;
+        justify-content:center;
+}
+
+.container {
+        margin-top:60px;
+        height:calc(100vh - 60px);
+        max-width:450px;
+        display:flex;
+        width:100%;
+        justify-content:center;
+        align-items:center;
+        /* background-color:var(--bg-white); */
+}
+
+
+
+.form {
+        display:flex;
+        width:100%;
+        flex-direction:column;
+        gap:10px;
+}
+
+.form > div {
+        display:flex;
+        flex-direction:column;
+}
+
+.form > div > label {
+        display:flex;
+}
+

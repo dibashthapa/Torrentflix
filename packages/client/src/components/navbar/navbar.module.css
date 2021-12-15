@@ -1,0 +1,26 @@
+.navbar {
+        text-align:center;
+        position:fixed;
+        top:0;
+        left:0;
+        display:flex;
+        justify-content:center;
+        background-color:var(--bg-white);
+        width:100%;
+        z-index:10;
+}
+
+
+.nav__wrapper {
+        max-width:var(--container-max-width);
+        display:flex;
+        width:100%;
+        justify-content:space-between;
+        align-items:center;
+}
+
+
+.nav__title {
+        color:var(--primary);
+}
+

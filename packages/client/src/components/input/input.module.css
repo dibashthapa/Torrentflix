@@ -1,0 +1,7 @@
+.input {
+        padding:15px 15px;
+        border-radius:6px;
+        outline:0px;
+        border:1px solid var(--primary);
+}
+
