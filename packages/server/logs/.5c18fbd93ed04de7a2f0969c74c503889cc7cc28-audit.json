@@ -1,0 +1,14 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/home/dibash/torrentflix/packages/server/logs/.5c18fbd93ed04de7a2f0969c74c503889cc7cc28-audit.json",
+    "files": [
+        {
+            "date": 1639681261067,
+            "name": "/home/dibash/torrentflix/packages/server/logs/2021-12-17.log",
+            "hash": "0aa747a7fe1a59e531efba176b3f74eb"
+        }
+    ]
+}

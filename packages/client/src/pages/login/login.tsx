@@ -3,9 +3,11 @@ import { Input } from "../../components/input";
 import { Link } from "../../components/link";
 import s from "./login.module.css";
 export const Login = () => {
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
+
   return (
     <div className={s.wrapper}>
       <div className={s.container}>

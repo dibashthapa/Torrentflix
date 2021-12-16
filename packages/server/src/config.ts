@@ -1,15 +1,16 @@
 import dotenv from "dotenv";
 dotenv.config();
 export const config = {
-  environment: process.env.ENVIRONMENT,
   rootVideoPath: process.env.ROOT_VIDEO_PATH as string,
-  dbHost: process.env.DB_HOST,
-  dbPort: process.env.DB_PORT,
-  dbName: process.env.DB_NAME,
-  dbPassword: process.env.DB_PASSWORD,
-  dbUsername: process.env.DB_USERNAME,
   redisHost: process.env.REDIS_HOST,
   redisPort: Number(process.env.REDIS_PORT),
-  salt: process.env.SALT,
   corsOrigin: process.env.CORS_ORIGIN,
 };
+
+export const logDirectory = process.env.LOG_DIR;
+
+export const environment = process.env.NODE_ENV;
+export const port = process.env.PORT;
+export const jwtExpiry = process.env.JWT_EXPIRY;
+
+export const secretToken = process.env.SECRET_TOKEN as string;

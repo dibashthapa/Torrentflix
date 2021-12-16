@@ -3,10 +3,10 @@ import { randomUUID } from "crypto";
 import express, { NextFunction, Request, Response } from "express";
 import { createReadStream, existsSync, statSync } from "fs";
 import { join } from "path/posix";
-import { config } from "../config";
-import { torrentQueue } from "../queues/torrentQueue";
-import { killJob } from "../utils/killJob";
-import prismaClient from "../database/prisma";
+import { config } from "../../config";
+import { torrentQueue } from "../../queues/torrentQueue";
+import { killJob } from "../../utils/killJob";
+import prismaClient from "../../database/prisma";
 
 const router = express.Router();
 
