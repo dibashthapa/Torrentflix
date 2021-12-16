@@ -10,5 +10,6 @@ export const config = {
   dbUsername: process.env.DB_USERNAME,
   redisHost: process.env.REDIS_HOST,
   redisPort: Number(process.env.REDIS_PORT),
+  salt: process.env.SALT,
   corsOrigin: process.env.CORS_ORIGIN,
 };

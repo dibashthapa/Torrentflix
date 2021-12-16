@@ -1,7 +1,7 @@
 import { config } from "../config";
 import Queue, { Job, QueueOptions } from "bull";
 import path from "path";
-import { Video } from "../entity/Video";
+import prismaClient from "../database/prisma";
 
 interface TorrentQueueItem {
   magnetLink: string;
@@ -23,10 +23,20 @@ const torrentQueue = new Queue<TorrentQueueItem>("torrent transform", {
 torrentQueue.process(path.join(process.cwd(), "src/encoders/aria2c.ts"));
 
 torrentQueue.on("completed", async function (_: Job, result) {
-  const video = await Video.findOne({ hash: result.hashedValue });
+  const video = await prismaClient.video.findFirst({
+    where: {
+      hash: result.hashedValue,
+    },
+  });
   if (video) {
-    video.status = "Downloaded";
-    video.save();
+    await prismaClient.video.update({
+      where: {
+        id: video.id,
+      },
+      data: {
+        status: "Downloaded",
+      },
+    });
   }
 });
 

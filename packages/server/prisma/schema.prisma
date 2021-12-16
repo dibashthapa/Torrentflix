@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id       Int    @id @default(autoincrement())
+  name    String @db.VarChar
+  email    String @db.VarChar
+  password String @db.VarChar
+  videos   Video[]
+}
+
+model Video {
+  id         Int      @id @default(autoincrement())
+  filename   String   @db.VarChar
+  hash       String   @db.VarChar
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  path       String   @db.VarChar
+  magnetLink String   @db.VarChar
+  status     String  @default("Pending") @db.VarChar
+  jobId      String  @db.VarChar
+  user       User    @relation(fields:[userId], references:[id], onDelete: Cascade)   
+  userId     Int
+}

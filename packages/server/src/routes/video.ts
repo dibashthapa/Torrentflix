@@ -4,9 +4,9 @@ import express, { NextFunction, Request, Response } from "express";
 import { createReadStream, existsSync, statSync } from "fs";
 import { join } from "path/posix";
 import { config } from "../config";
-import { Video } from "../entity/Video";
 import { torrentQueue } from "../queues/torrentQueue";
 import { killJob } from "../utils/killJob";
+import prismaClient from "../database/prisma";
 
 const router = express.Router();
 
@@ -33,9 +33,7 @@ const queueMiddleware = async (
 };
 
 router.get("/", async function (_: Request, res: Response) {
-  const videos = await Video.find({
-    select: ["id", "filename", "magnetLink", "hash", "status"],
-  });
+  const videos = await prismaClient.video.findMany({});
   if (videos.length === 0) return res.json({ message: "No videos found" });
   return res.json(videos);
 });
@@ -47,13 +45,13 @@ router.get("/progress", async function (_: Request, res: Response) {
 
 router.delete("/:id", async function (req: Request, res: Response) {
   const id = Number(req.params.id);
-  const video = await Video.findOne({ id });
+  const video = await prismaClient.video.findFirst({ where: { id } });
   const jobId = video?.jobId as JobId;
   const job = await torrentQueue.getJob(jobId);
   if (job?.isActive) {
     await killJob(torrentQueue, job.id).catch((err) => console.log(err));
   }
-  await Video.delete({ id });
+  await prismaClient.video.delete({ where: { id } });
   res.json("Successfully deleted");
 });
 
@@ -61,26 +59,29 @@ router.post("/", queueMiddleware, async function (req: Request, res: Response) {
   try {
     const { fileName, magnetLink, hash, jobId } = res.locals;
     const filePath = join(config.rootVideoPath, "encodedVideos", fileName);
-    const video = Video.create({
-      filename: fileName,
-      hash,
-      jobId,
-      path: filePath,
-      magnetLink: magnetLink,
+    const video = await prismaClient.video.create({
+      data: {
+        filename: fileName,
+        hash,
+        jobId,
+        path: filePath,
+        magnetLink: magnetLink,
+        userId: 1,
+      },
     });
-    await video.save();
 
-    return res.json("Added video to the queue");
+    return res.json({ video });
   } catch (err) {
     return res.json("Error occured");
   }
 });
 
 router.get("/:id", async (req: Request, res: Response) => {
-  const id = req.params.id;
-  const video = await Video.findOne({
-    select: ["path", "filename"],
-    where: { hash: id },
+  const id = Number(req.params.id);
+
+  const video = await prismaClient.video.findFirst({
+    where: { id },
+    select: { path: true, filename: true },
   });
   if (!video) return res.status(404).json("Video not found");
   const vidPath = join(video.path, video.filename);
