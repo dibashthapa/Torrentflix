@@ -29,15 +29,18 @@ export class Api {
     );
   }
 
-  public get<ResponseType>(url: string, params: AxiosRequestConfig["params"]) {
-    return this.axiosFunction.get<ResponseType>(url, params);
+  public get<T = never, R = BaseApiResponse<T>>(
+    url: string,
+    params: AxiosRequestConfig["params"]
+  ) {
+    return this.axiosFunction.get<R>(url, params);
   }
 
-  public post<T = T extends BaseApiResponse<T>>(
+  public post<T = never, R = BaseApiResponse<T>>(
     url: string,
     data?: AxiosRequestConfig["data"],
     headers?: AxiosRequestConfig["headers"]
   ) {
-    return this.axiosFunction.post<ResponseType>(url, data, { headers });
+    return this.axiosFunction.post<R>(url, data, { headers });
   }
 }
