@@ -8,7 +8,7 @@ const io = new Server(httpServer, { transports: ["websocket"] });
 io.on("connection", function (socket: Socket) {
   console.log("socket io connected");
   torrentQueue.on("progress", function (result) {
-    socket.emit("log", result);
+    socket.to(result.data.userId).emit("log", result);
   });
 });
 

@@ -6,6 +6,12 @@ export interface BaseApiResponse<T = any> {
   data: T;
 }
 
+export interface BaseApiError {
+  statusCode: string;
+  message: string;
+  url: string;
+}
+
 export class Api {
   private axiosFunction;
   public constructor(hasToken: boolean = false) {
@@ -31,7 +37,7 @@ export class Api {
 
   public get<T = never, R = BaseApiResponse<T>>(
     url: string,
-    params: AxiosRequestConfig["params"]
+    params?: AxiosRequestConfig["params"]
   ) {
     return this.axiosFunction.get<R>(url, params);
   }

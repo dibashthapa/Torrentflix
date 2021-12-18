@@ -7,6 +7,7 @@ interface TorrentQueueItem {
   magnetLink: string;
   fileName: string;
   hashedValue: string;
+  userId: string;
 }
 
 const redisConfig: QueueOptions = {

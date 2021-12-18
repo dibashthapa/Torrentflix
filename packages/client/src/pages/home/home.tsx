@@ -1,35 +1,31 @@
-import { Button } from "../../components/button";
+import { useCallback, useState } from "react";
 import { Input } from "../../components/input";
-import { Link } from "../../components/link";
+import { AddIcon, LinkIcon } from "../../components/SVGIcons";
 import s from "./home.module.css";
-const AddIcon = () => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className={s.search__icon}
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-      />
-    </svg>
-  );
-};
 
 export const Home: React.FC = () => {
+  const [magnetLink, setMagnetLink] = useState("");
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMagnetLink(e.target.value);
+  };
   return (
     <>
       <div className={s.wrapper}>
         <div className={s.container}>
-          <div className={s.search__container}>
-            <Input type="text" placeholder="Paste Link here" />
+          <form onSubmit={onSubmit} className={s.search__container}>
+            <LinkIcon />
+            <Input
+              type="text"
+              placeholder="Paste Link here"
+              onChange={handleChange}
+              value={magnetLink}
+            />
             <AddIcon />
-          </div>
+          </form>
 
           <div className={s.video__container}>
             <h2>My Videos</h2>
