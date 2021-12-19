@@ -1,10 +1,13 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { Card } from "../../components/card";
 import { Input } from "../../components/input";
 import { AddIcon, LinkIcon } from "../../components/SVGIcons";
+import { getAllVideos, VideoListResponse } from "../../services/videoService";
 import s from "./home.module.css";
 
 export const Home: React.FC = () => {
   const [magnetLink, setMagnetLink] = useState("");
+  const [videos, setVideos] = useState<VideoListResponse[]>([]);
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
@@ -12,6 +15,15 @@ export const Home: React.FC = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMagnetLink(e.target.value);
   };
+
+  useEffect(() => {
+    async function fetchVideos() {
+      const response = await getAllVideos();
+      const videoList = response.data.data;
+      setVideos(videoList);
+    }
+    fetchVideos();
+  }, []);
   return (
     <>
       <div className={s.wrapper}>
@@ -29,50 +41,16 @@ export const Home: React.FC = () => {
 
           <div className={s.video__container}>
             <h2>My Videos</h2>
-            <table className={s.table}>
-              <thead>
-                <tr>
-                  <th>S.N</th>
-                  <th>Title</th>
-                  <th>Duration</th>
-                  <th>Status</th>
-                  <th>Progress</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>SpiderMan</td>
-                  <td>04:05</td>
-                  <td>Downloaded</td>
-                  <td>100%</td>
-                  <td>
-                    <div className={s.actions__container}>
-                      <div>Play</div>
-                      <div>Delete</div>
-                      <div>Edit</div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>SpiderMan</td>
-                  <td>04:05</td>
-                  <td>Downloaded</td>
-                  <td>100%</td>
-                  <td>Delete</td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>SpiderMan</td>
-                  <td>04:05</td>
-                  <td>Downloaded</td>
-                  <td>100%</td>
-                  <td>Delete</td>
-                </tr>
-              </tbody>
-            </table>
+            <div className={s.videos}>
+              {videos.map((value, index) => (
+                <Card
+                  key={index}
+                  tags={value.tags}
+                  thumbnail={value.thumbnail}
+                  title={value.filename}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>

@@ -13,12 +13,6 @@ const initialState: State = {
   isUserLoggedIn: false,
 };
 
-const token = localStorage.getItem("token");
-
-if (token) {
-  initialState.isUserLoggedIn = true;
-}
-
 export const AuthProvider: React.FC<ProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 

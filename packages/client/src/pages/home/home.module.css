@@ -34,6 +34,11 @@
         margin-top:40px;
 }
 
+.videos {
+        display:flex;
+        flex-wrap:wrap;
+        gap:15px;
+}
 
 .video__container h2 {
         text-align:left;

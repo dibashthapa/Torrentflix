@@ -26,7 +26,8 @@ export class Api {
     this.axiosFunction.interceptors.request.use(
       (config) => {
         if (!config.headers) return config;
-        config.headers["Authorization"] = "Bearer " + localStorage.get("token");
+        config.headers["Authorization"] =
+          "Bearer " + localStorage.getItem("token");
         return config;
       },
       (error) => {

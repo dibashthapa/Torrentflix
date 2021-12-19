@@ -22,7 +22,6 @@ export function killJob(queue: Queue, jobId?: JobId) {
         }
       });
       job.discard();
-      const nextJob = await torrentQueue.getNextJob();
       torrentQueue.resume();
     } catch (e) {
       reject(e);

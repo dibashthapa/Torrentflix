@@ -2,26 +2,19 @@ import express, { Request, Response } from "express";
 import prismaClient from "../../database/prisma";
 import { BadRequestError, NoDataError } from "../../core/ApiError";
 import { SuccessResponse } from "../../core/ApiResponse";
-import auth from "../../middlewares/auth";
+import auth, { ReqUser } from "../../middlewares/auth";
 import asyncHandler from "../../utils/asyncHandler";
 import { fetchPage, scrape } from "../../utils/1377x";
 import { randomUUID } from "crypto";
 import { torrentQueue } from "../../queues/torrentQueue";
 import { config } from "../../config";
 import { join } from "path";
-export interface ProtectedRequest extends Request {
-  user: {
-    email: string;
-    id: number;
-  };
-}
 
 const router = express.Router();
-
+router.use("/", auth);
 router.get(
   "/all",
-  auth,
-  asyncHandler(async (req: ProtectedRequest, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const videos = await prismaClient.video.findMany({});
     if (videos.length === 0) throw new NoDataError();
     return new SuccessResponse("Success", videos).send(res);
@@ -30,15 +23,15 @@ router.get(
 
 router.post(
   "/create",
-  auth,
-  asyncHandler(async (req: ProtectedRequest, res) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const { link } = req.body;
+    const user = res.locals.user as ReqUser;
 
     const response = await fetchPage(link);
     const fileInfo = scrape(response);
     if (!fileInfo) throw new NoDataError();
     const videoExists = await prismaClient.video.findFirst({
-      where: { userId: req.user.id, magnetLink: fileInfo.magnetLink },
+      where: { userId: user.id, magnetLink: fileInfo.magnetLink },
     });
 
     if (videoExists)
@@ -48,7 +41,7 @@ router.post(
     const match = fileInfo.magnetLink?.match(re);
     const fileName = decodeURI(match?.groups?.link as string);
     const newJob = await torrentQueue.add({
-      userId: String(req.user.id),
+      userId: String(user.id),
       hashedValue: hash,
       fileName,
       magnetLink: fileInfo.magnetLink as string,
@@ -57,7 +50,7 @@ router.post(
     const createdVideo = await prismaClient.video.create({
       data: {
         magnetLink: fileInfo.magnetLink,
-        userId: req.user.id,
+        userId: user.id,
         hash,
         thumbnail: fileInfo.thumbnail,
         tags: fileInfo.tags,

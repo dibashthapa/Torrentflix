@@ -15,16 +15,23 @@ export interface AuthResponse {
   accessToken: string;
 }
 
-const api = new Api();
-
 export const loginService = (credentials: LoginCredentials | undefined) => {
+  const api = new Api();
   const endpoint = "/login/basic";
   const response = api.post<AuthResponse>(endpoint, credentials);
   return response;
 };
 
 export const registerService = (credentials: SignupCredential) => {
+  const api = new Api();
   const endpoint = "/register/basic";
   const response = api.post<AuthResponse>(endpoint, credentials);
+  return response;
+};
+
+export const userVerify = () => {
+  const api = new Api(true);
+  const endpoint = "/verify";
+  const response = api.post<string>(endpoint);
   return response;
 };

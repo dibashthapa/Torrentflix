@@ -1,5 +1,5 @@
 import axios from "axios";
-import { loginService } from "../services/authService";
+import { loginService, userVerify } from "../services/authService";
 import { payload, Dispatch } from "./authContext";
 
 // export async function getUser(dispatch: Dispatch) {
@@ -21,6 +21,15 @@ import { payload, Dispatch } from "./authContext";
 //     }
 //   }
 // }
+//
+export async function verifyUser(dispatch: Dispatch) {
+  try {
+    await userVerify();
+    dispatch({ type: "VERIFIED_SUCESS" });
+  } catch (err) {
+    dispatch({ type: "VERIFIED_ERROR" });
+  }
+}
 
 export async function loginUser(
   dispatch: Dispatch,

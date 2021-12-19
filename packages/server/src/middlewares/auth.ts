@@ -3,11 +3,13 @@ import { AuthFailureError, BadTokenError } from "../core/ApiError";
 import asyncHandler from "../utils/asyncHandler";
 import jwt from "jsonwebtoken";
 import { secretToken } from "../config";
-import { ProtectedRequest } from "../routes/media/video";
 
-const router = express.Router();
+export interface ReqUser {
+  email: string;
+  id: number;
+}
 
-export default (req: ProtectedRequest, res: Response, next: NextFunction) => {
+export default (req: Request, res: Response, next: NextFunction) => {
   const authorization = req.headers.authorization;
   if (!authorization) throw new AuthFailureError();
 
@@ -19,7 +21,7 @@ export default (req: ProtectedRequest, res: Response, next: NextFunction) => {
 
   if (!isValid) throw new BadTokenError();
 
-  const payload = jwt.decode(token) as ProtectedRequest["user"];
-  req.user = { email: payload.email, id: payload.id };
+  const payload = jwt.decode(token) as ReqUser;
+  res.locals.user = { email: payload.email, id: payload.id };
   return next();
 };
