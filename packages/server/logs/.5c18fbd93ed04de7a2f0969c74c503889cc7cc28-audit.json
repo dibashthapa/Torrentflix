@@ -19,6 +19,11 @@
             "date": 1639853582948,
             "name": "/home/dibash/torrentflix/packages/server/logs/2021-12-19.log",
             "hash": "e7fedc82eb09b123620b5760951e7d9c"
+        },
+        {
+            "date": 1639979366269,
+            "name": "/home/dibash/torrentflix/packages/server/logs/2021-12-20.log",
+            "hash": "6b811f9da54dc8c52ce9892ccb53a797"
         }
     ]
 }
