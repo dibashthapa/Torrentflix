@@ -4,4 +4,5 @@ api.env
 .env.test
 logs
 build
+coverage
 
