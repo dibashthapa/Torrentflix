@@ -26,7 +26,7 @@ describe("Login basic route", () => {
 
   afterAll(async () => {
     await prismaClient.user.deleteMany({});
-    await prismaClient.$disconnect()
+    await prismaClient.$disconnect();
   });
 
   it("should send error when empty body is sent", async () => {
