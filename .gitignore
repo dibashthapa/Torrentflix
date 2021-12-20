@@ -1,5 +1,7 @@
 node_modules 
 api.env
 .env
+.env.test
+logs
 build
 
