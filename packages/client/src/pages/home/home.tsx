@@ -1,27 +1,35 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Card } from "../../components/card";
 import { Input } from "../../components/input";
+import { Link } from "../../components/link";
 import { AddIcon, LinkIcon } from "../../components/SVGIcons";
-import { getAllVideos, VideoListResponse } from "../../services/videoService";
+import {
+  createVideo,
+  getAllVideos,
+  VideoListResponse,
+} from "../../services/videoService";
 import s from "./home.module.css";
 
 export const Home: React.FC = () => {
   const [magnetLink, setMagnetLink] = useState("");
   const [videos, setVideos] = useState<VideoListResponse[]>([]);
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    await createVideo(magnetLink);
+    setMagnetLink("");
+    await fetchVideos();
   };
+  async function fetchVideos() {
+    const response = await getAllVideos();
+    const videoList = response.data.data;
+    setVideos(videoList);
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMagnetLink(e.target.value);
   };
 
   useEffect(() => {
-    async function fetchVideos() {
-      const response = await getAllVideos();
-      const videoList = response.data.data;
-      setVideos(videoList);
-    }
     fetchVideos();
   }, []);
   return (
@@ -43,12 +51,13 @@ export const Home: React.FC = () => {
             <h2>My Videos</h2>
             <div className={s.videos}>
               {videos.map((value, index) => (
-                <Card
-                  key={index}
-                  tags={value.tags}
-                  thumbnail={value.thumbnail}
-                  title={value.filename}
-                />
+                <Link to={`/videos/${value.hash}`} key={index}>
+                  <Card
+                    tags={value.tags}
+                    thumbnail={value.thumbnail}
+                    title={value.filename}
+                  />
+                </Link>
               ))}
             </div>
           </div>

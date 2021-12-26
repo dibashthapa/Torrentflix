@@ -22,7 +22,7 @@ export const loginService = (credentials: LoginCredentials | undefined) => {
   return response;
 };
 
-export const registerService = (credentials: SignupCredential) => {
+export const registerService = (credentials: SignupCredential | undefined) => {
   const api = new Api();
   const endpoint = "/register/basic";
   const response = api.post<AuthResponse>(endpoint, credentials);

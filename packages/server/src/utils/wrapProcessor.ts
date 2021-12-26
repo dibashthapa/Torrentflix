@@ -14,7 +14,7 @@ export function wrapProcessor(processor: ProcessCallbackFunction<void>) {
     try {
       await job.update({ ...job.data, pid: process.pid });
       const result = processor(job, done);
-      console.log(job);
+      console.log(result);
       return result;
     } finally {
       process.removeListener("SIGTERM", exitHandler);

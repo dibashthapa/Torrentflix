@@ -12,7 +12,7 @@ const Routes = () => {
         <Route path={"/"} element={<PrivateElement element={<Home />} />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/videos" element={<Video />} />
+        <Route path="/videos/:id" element={<Video />} />
       </ReactRoutes>
     </BrowserRouter>
   );

@@ -1,0 +1,16 @@
+.video {
+  width:100%;
+  height: 100%;
+}
+
+.wrapper {
+        width:100%;
+        display:flex;
+        justify-content:center;
+}
+
+.container {
+        margin-top:100px;
+        width:100%;
+        max-width: var(--container-max-width);
+}

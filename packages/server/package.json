@@ -1,6 +1,7 @@
 {
   "name": "torrentflix",
   "version": "1.0.2",
+  "private": true,
   "description": "Online streaming site to stream downloaded torrent videos online",
   "scripts": {
     "start": "npm run build && npm run serve",

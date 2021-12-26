@@ -1,7 +1,7 @@
 import { config } from "../config";
 import Queue, { Job, QueueOptions } from "bull";
-import path from "path";
 import prismaClient from "../database/prisma";
+import aria2c from "../encoders/aria2c";
 
 interface TorrentQueueItem {
   magnetLink: string;
@@ -21,7 +21,7 @@ const torrentQueue = new Queue<TorrentQueueItem>("torrent transform", {
   ...redisConfig,
 });
 
-torrentQueue.process(path.join(process.cwd(), "src/encoders/aria2c.ts"));
+torrentQueue.process(aria2c);
 
 torrentQueue.on("completed", async function (_: Job, result) {
   const video = await prismaClient.video.findFirst({

@@ -16,6 +16,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof ApiError) {
     ApiError.handle(err, res);
   } else {
+    console.log("error", err);
     new BadRequestResponse(err.message).send(res);
   }
 });

@@ -25,6 +25,7 @@ const encodeMagnetToVideo = (job: Job, done: DoneCallback) => {
       progress.indexOf("(") + 1,
       progress.indexOf("/%")
     );
+    console.log(data.toString());
 
     console.log("percentage", percentage);
     job.progress(percentage);

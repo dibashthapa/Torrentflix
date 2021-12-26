@@ -1,5 +1,9 @@
 import axios from "axios";
-import { loginService, userVerify } from "../services/authService";
+import {
+  loginService,
+  registerService,
+  userVerify,
+} from "../services/authService";
 import { payload, Dispatch } from "./authContext";
 
 // export async function getUser(dispatch: Dispatch) {
@@ -55,6 +59,30 @@ export async function loginUser(
   }
 }
 
+export async function registerUser(
+  dispatch: Dispatch,
+  payload: payload["registerCredentials"]
+) {
+  try {
+    dispatch({
+      type: "SIGNUP_REQUEST",
+    });
+
+    const response = await registerService(payload);
+    const successResponse = response.data.data;
+
+    if (successResponse) {
+      dispatch({ type: "SIGNUP_SUCCESS" });
+      return successResponse;
+    }
+  } catch (err: any) {
+    if (axios.isAxiosError(err)) {
+      dispatch({ type: "SIGNUP_ERROR", error: err.response?.data as string });
+      return;
+    }
+    dispatch({ type: "SIGNUP_ERROR", error: err.message });
+  }
+}
 export function logoutUser(dispatch: Dispatch) {
   localStorage.removeItem("token");
   dispatch({ type: "LOGOUT" });
