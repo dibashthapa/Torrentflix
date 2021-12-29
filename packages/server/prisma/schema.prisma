@@ -30,4 +30,5 @@ model Video {
   userId     Int
   tags       String[]  
   thumbnail String? @db.VarChar
+  size String @db.VarChar
 }

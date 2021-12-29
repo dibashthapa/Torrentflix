@@ -98,6 +98,7 @@ router.post(
       data: {
         magnetLink: fileInfo.magnetLink,
         userId: user.id,
+        size: fileInfo.totalSize,
         hash,
         thumbnail: fileInfo.thumbnail,
         tags: fileInfo.tags,

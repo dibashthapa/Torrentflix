@@ -1,4 +1,3 @@
-import { Button } from "../button";
 import s from "./card.module.css";
 interface CardProps {
   thumbnail: string;
