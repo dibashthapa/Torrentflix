@@ -54,9 +54,7 @@ export default class WebSocketClient {
       console.log("websocket connecting to" + connectionUrl);
     }
 
-    this.conn = new WebSocket(
-      `${connectionUrl}?connection_id=${this.connectionId}&sequence_number=${this.serverSequence}`
-    );
+    this.conn = new WebSocket(`${connectionUrl}`);
     this.connectionUrl = connectionUrl;
 
     this.conn.onopen = () => {
@@ -131,7 +129,7 @@ export default class WebSocketClient {
           Reflect.deleteProperty(this.responseCallbacks, msg.seq_reply);
         }
       } else if (this.eventCallback) {
-        if (msg.event === SocketEvents.HELLO && this.missedEventCallback) {
+        if (msg.event === SocketEvents.HELLO) {
           console.log("got connection id", msg.data.connection_id);
           if (
             this.connectionId !== "" &&
@@ -140,7 +138,6 @@ export default class WebSocketClient {
             console.log(
               "long timeout, or server restart, or sequence number is not found."
             ); //eslint-disable-line no-console
-            this.missedEventCallback();
             this.serverSequence = 0;
           }
           // If it's a fresh connection, we have to set the connectionId regardless.
@@ -176,6 +173,7 @@ export default class WebSocketClient {
       this.responseCallbacks[msg.seq] = responseCallback;
     }
 
+    console.log(this.conn?.readyState);
     if (this.conn && this.conn.readyState === WebSocket.OPEN) {
       this.conn.send(JSON.stringify(msg));
     } else if (!this.conn || this.conn.readyState === WebSocket.CLOSED) {

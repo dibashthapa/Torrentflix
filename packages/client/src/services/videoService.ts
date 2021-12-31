@@ -6,6 +6,7 @@ export interface VideoListResponse {
   progress: string;
   hash: number;
   tags: string[];
+  size:string;
   thumbnail: string;
 }
 

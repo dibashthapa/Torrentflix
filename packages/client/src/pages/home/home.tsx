@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import WebSocketClient from "../../client/websocket_instance";
 import { Card } from "../../components/card";
 import { Input } from "../../components/input";
 import { Link } from "../../components/link";
@@ -8,6 +9,7 @@ import {
   getAllVideos,
   VideoListResponse,
 } from "../../services/videoService";
+import { SocketEvents } from "../../utils/constants";
 import s from "./home.module.css";
 
 export const Home: React.FC = () => {
@@ -30,6 +32,15 @@ export const Home: React.FC = () => {
   };
 
   useEffect(() => {
+    const websocketClient = new WebSocket("ws://localhost:5000");
+    console.log(websocketClient.readyState);
+    websocketClient.onopen = function () {
+      console.log("connection opened");
+    };
+
+    websocketClient.onmessage = function (message) {
+      console.log("message received", message.data);
+    };
     fetchVideos();
   }, []);
   return (
@@ -54,6 +65,7 @@ export const Home: React.FC = () => {
                 <Link to={`/videos/${value.hash}`} key={index}>
                   <Card
                     tags={value.tags}
+                    size={value.size}
                     thumbnail={value.thumbnail}
                     title={value.filename}
                   />

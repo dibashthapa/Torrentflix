@@ -15,7 +15,7 @@
     "eslint": "eslint . --ext .js,.ts",
     "upgrade": "npm update --save-dev && npm update --save",
     "test": "jest --detectOpenHandles",
-     "migrate:test": "dotenv -e .env.test prisma migrate dev"
+    "migrate:test": "dotenv -e .env.test prisma migrate dev"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
@@ -31,9 +31,9 @@
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.7.1",
     "prisma": "3.6.0",
-    "socket.io": "^4.3.2",
     "supertest": "^6.1.6",
     "tree-kill": "^1.2.2",
+    "websocket": "^1.0.34",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.5",
     "ws": "^8.2.3"
@@ -50,6 +50,7 @@
     "@types/jsonwebtoken": "^8.5.6",
     "@types/node": "^16.11.7",
     "@types/supertest": "^2.0.11",
+    "@types/websocket": "^1.0.4",
     "@types/ws": "^8.2.0",
     "colors": "^1.4.0",
     "concurrently": "^5.3.0",

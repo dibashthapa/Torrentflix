@@ -3,9 +3,10 @@ interface CardProps {
   thumbnail: string;
   title: string;
   tags: string[];
+  size: string;
 }
 export const Card: React.FC<CardProps> = (props) => {
-  const { thumbnail, title, tags } = props;
+  const { thumbnail, title, tags , size} = props;
   return (
     <div className={s.card__container}>
       <div className={s.card}>
@@ -18,7 +19,7 @@ export const Card: React.FC<CardProps> = (props) => {
           </h1>
           <div className={s.video__size}>
             <p>Download Size</p>
-            <p>100MB</p>
+            <p>{ size }</p>
           </div>
           <div className={s.card__footer__tags}>
             {tags.slice(1, 3).map((tag, index) => (
