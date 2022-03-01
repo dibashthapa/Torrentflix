@@ -23,6 +23,7 @@ model Video {
   created_at DateTime @default(now()) @db.Timestamp(6)
   updated_at DateTime @default(now()) @db.Timestamp(6)
   path       String   @db.VarChar
+  link String @db.VarChar
   magnetLink String?   @db.VarChar
   status     String  @default("Pending") @db.VarChar
   jobId      String  @db.VarChar

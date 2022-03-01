@@ -42,6 +42,4 @@ export default createLogger({
       ),
     }),
   ],
-  exceptionHandlers: [new DailyRotateFile(options.file)],
-  exitOnError: false, // do not exit on handled exceptions
 });

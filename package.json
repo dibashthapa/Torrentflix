@@ -1,12 +1,20 @@
 {
+  "private": true,
   "devDependencies": {
-    "husky": "^7.0.4"
+    "husky": "^7.0.4",
+    "lerna": "^4.0.0"
   },
   "scripts": {
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": "./node_modules/.bin/lerna run test",
+    "diff": "./node_modules/.bin/lerna diff",
+    "start": "./node_modules/.bin/lerna run start_dev --stream"
   },
   "dependencies": {
     "@commitlint/cli": "^15.0.0",
     "@commitlint/config-conventional": "^15.0.0"
-  }
+  },
+  "workspaces": [
+    "packages/*"
+  ]
 }

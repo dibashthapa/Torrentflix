@@ -1,46 +1,46 @@
-import { State, ActionType } from "./authContext";
+import {State, ActionType} from './authContext';
 
 export function reducer(state: State, action: ActionType): State {
   switch (action.type) {
-    case "INITIALIZED":
+    case 'INITIALIZED':
       return {
         ...state,
         isLoading: false,
       };
-    case "LOGIN_REQUEST":
+    case 'LOGIN_REQUEST':
       return {
         ...state,
         isLoading: true,
       };
 
-    case "LOGIN_SUCCESS":
+    case 'LOGIN_SUCCESS':
       return {
         ...state,
         isLoading: false,
         isUserLoggedIn: true,
-        errorMessage: "",
+        errorMessage: '',
       };
-    case "LOGIN_ERROR":
+    case 'LOGIN_ERROR':
       return {
         ...state,
         isLoading: false,
         errorMessage: action.error,
         isUserLoggedIn: false,
       };
-    case "SIGNUP_REQUEST":
+    case 'SIGNUP_REQUEST':
       return {
         ...state,
         isLoading: true,
       };
 
-    case "SIGNUP_SUCCESS":
+    case 'SIGNUP_SUCCESS':
       return {
         ...state,
         currentUser: action.payload?.user,
         isLoading: false,
         isUserLoggedIn: true,
       };
-    case "SIGNUP_ERROR":
+    case 'SIGNUP_ERROR':
       return {
         ...state,
         isLoading: false,
@@ -48,24 +48,30 @@ export function reducer(state: State, action: ActionType): State {
         isUserLoggedIn: false,
       };
 
-    case "FETCH_USER_SUCCESS":
+    case 'FETCH_USER_SUCCESS':
       return {
         ...state,
         currentUser: action.payload?.user,
         isLoading: false,
         isUserLoggedIn: true,
-        errorMessage: "",
+        errorMessage: '',
       };
-    case "GET_TOKEN":
+    case 'GET_TOKEN':
       return {
         ...state,
       };
-    case "SET_TOKEN":
+    case 'SET_TOKEN':
       return {
         ...state,
+      };
+    case 'VERIFIED_REQUEST':
+      return {
+        ...state,
+        isLoading: true,
+        isUserLoggedIn: false,
       };
 
-    case "VERIFIED_SUCESS":
+    case 'VERIFIED_SUCESS':
       return {
         ...state,
         currentUser: action.payload?.user,
@@ -73,7 +79,7 @@ export function reducer(state: State, action: ActionType): State {
         errorMessage: undefined,
         isUserLoggedIn: true,
       };
-    case "VERIFIED_ERROR":
+    case 'VERIFIED_ERROR':
       return {
         ...state,
         isLoading: false,
@@ -81,7 +87,7 @@ export function reducer(state: State, action: ActionType): State {
         isUserLoggedIn: false,
       };
 
-    case "LOGOUT":
+    case 'LOGOUT':
       return {
         ...state,
         currentUser: undefined,

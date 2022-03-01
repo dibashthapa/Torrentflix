@@ -1,6 +1,5 @@
-import express, { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { AuthFailureError, BadTokenError } from "../core/ApiError";
-import asyncHandler from "../utils/asyncHandler";
 import jwt from "jsonwebtoken";
 import { secretToken } from "../config";
 

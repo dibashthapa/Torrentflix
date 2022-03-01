@@ -1,75 +1,83 @@
 .card__container {
-    animation-fill-mode: both;
-    animation-duration: 800ms;
-    animation-delay: 320ms;
-    animation-iteration-count: 1;
-    animation-name: reveal;
-    opacity: 1;
-    max-width:250px;
+  animation-fill-mode: both;
+  animation-duration: 800ms;
+  animation-delay: 320ms;
+  animation-iteration-count: 1;
+  animation-name: reveal;
+  opacity: 1;
+  max-width: 250px;
 }
 
 .card {
-    width: 100%;
-    background-color: rgb(255, 255, 255);
-    position: relative;
-    border-radius: 6px;
-    cursor: pointer;
+  width: 100%;
+  background-color: rgb(255, 255, 255);
+  position: relative;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
-
-
-.card_image__container{
-    max-height: 240px;
-    display:flex;
-    justify-content:center;
-    align-items:stretch
+.card_image__container {
+  max-height: 240px;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
 }
 
 .card__image {
-    max-height:100%;
-    width:100%;
-
+  max-height: 100%;
+  width: 100%;
 }
 
 .card__footer {
-    padding: 20px 25px;
+  padding: 20px 25px;
 }
 
 .card__footer__title {
-    font-size: 15px;
-    font-weight: 700;
-    color: rgb(13, 17, 54);
-    margin: 0px 0px 7px;
-    width: 100%;
-    word-break: break-all;
-    text-align:left;
+  font-size: 15px;
+  font-weight: 700;
+  color: rgb(13, 17, 54);
+  margin: 0px 0px 7px;
+  width: 100%;
+  word-break: break-all;
+  text-align: left;
 }
 
 .card__footer__tags {
-        display:flex;
-        flex-wrap:wrap;
-        gap:10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
 .card__footer__tags span {
-        border-radius:5px;
-        background-color:var(--bg-gray);
-        font-size:14px;
-        padding:5px 10px;
+  border-radius: 5px;
+  background-color: var(--bg-gray);
+  font-size: 14px;
+  padding: 5px 10px;
+}
+
+.delete__btn {
+  cursor: pointer;
+  padding: 10px;
+  background: red;
+  border: transparent;
+  color: white;
+  width: 100%;
+  border-radius: 5px;
 }
 
 .video__size {
-        display:flex;
-        justify-content:space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 @keyframes reveal {
-0% {
+  0% {
     opacity: 0;
-}
+  }
 
-100% {
+  100% {
     opacity: 1;
     transform: none;
-}
+  }
 }

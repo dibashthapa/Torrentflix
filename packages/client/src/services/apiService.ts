@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios, {AxiosRequestConfig} from 'axios';
 
 export interface BaseApiResponse<T = any> {
   statusCode: string;
@@ -24,13 +24,15 @@ export class Api {
 
   private setToken() {
     this.axiosFunction.interceptors.request.use(
-      (config) => {
+      config => {
         if (!config.headers) return config;
-        config.headers["Authorization"] =
-          "Bearer " + localStorage.getItem("token");
+        config.headers['Authorization'] = 'Bearer ' + localStorage.getItem('token');
         return config;
       },
-      (error) => {
+      error => {
+        if (error.response.data.message) {
+          error.message = error.response.data.message;
+        }
         return Promise.reject(error);
       }
     );
@@ -38,16 +40,16 @@ export class Api {
 
   public get<T = never, R = BaseApiResponse<T>>(
     url: string,
-    params?: AxiosRequestConfig["params"]
+    params?: AxiosRequestConfig['params']
   ) {
     return this.axiosFunction.get<R>(url, params);
   }
 
   public post<T = never, R = BaseApiResponse<T>>(
     url: string,
-    data?: AxiosRequestConfig["data"],
-    headers?: AxiosRequestConfig["headers"]
+    data?: AxiosRequestConfig['data'],
+    headers?: AxiosRequestConfig['headers']
   ) {
-    return this.axiosFunction.post<R>(url, data, { headers });
+    return this.axiosFunction.post<R>(url, data, {headers});
   }
 }

@@ -1,15 +1,18 @@
-import "./App.css";
-import { AuthProvider } from "./auth/authProvider";
-import { Navbar } from "./components/navbar";
-import Routes from "./routes";
+import './App.css';
+import {AuthProvider} from './auth/authProvider';
+import {Navbar} from './components/navbar';
+import Routes from './routes';
+import {ErrorHandler} from './utils/errorBoundary';
 
 function App() {
   return (
     <div className="App">
-      <Navbar />
-      <AuthProvider>
-        <Routes />
-      </AuthProvider>
+      <ErrorHandler>
+        <Navbar />
+        <AuthProvider>
+          <Routes />
+        </AuthProvider>
+      </ErrorHandler>
     </div>
   );
 }

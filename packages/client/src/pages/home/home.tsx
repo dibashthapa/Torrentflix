@@ -1,24 +1,19 @@
-import { useEffect, useState } from "react";
-import WebSocketClient from "../../client/websocket_instance";
-import { Card } from "../../components/card";
-import { Input } from "../../components/input";
-import { Link } from "../../components/link";
-import { AddIcon, LinkIcon } from "../../components/SVGIcons";
-import {
-  createVideo,
-  getAllVideos,
-  VideoListResponse,
-} from "../../services/videoService";
-import { SocketEvents } from "../../utils/constants";
-import s from "./home.module.css";
+import {useEffect, useState} from 'react';
+import WebSocketClient from '../../client/websocket_instance';
+import {Card} from '../../components/card';
+import {Input} from '../../components/input';
+import {AddIcon, LinkIcon} from '../../components/SVGIcons';
+import {createVideo, getAllVideos, VideoListResponse} from '../../services/videoService';
+import s from './home.module.css';
 
 export const Home: React.FC = () => {
-  const [magnetLink, setMagnetLink] = useState("");
+  const [magnetLink, setMagnetLink] = useState('');
   const [videos, setVideos] = useState<VideoListResponse[]>([]);
+  const [progressBar, setProgressBar] = useState<{value: string; hash: number}>();
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await createVideo(magnetLink);
-    setMagnetLink("");
+    setMagnetLink('');
     await fetchVideos();
   };
   async function fetchVideos() {
@@ -32,17 +27,31 @@ export const Home: React.FC = () => {
   };
 
   useEffect(() => {
-    const websocketClient = new WebSocket("ws://localhost:5000");
-    console.log(websocketClient.readyState);
-    websocketClient.onopen = function () {
-      console.log("connection opened");
-    };
+    WebSocketClient.initialize('ws://localhost:5000');
+    if (WebSocketClient.conn) {
+      WebSocketClient.conn.onmessage = function (msg) {
+        const data = JSON.parse(msg.data);
+        setProgressBar({value: data.progress, hash: data.data.hashedValue});
+      };
+    }
 
-    websocketClient.onmessage = function (message) {
-      console.log("message received", message.data);
-    };
+    // websocketClient.onmessage = function (message) {
+    //   const receivedMsg = JSON.parse(message.data);
+    //   const foundVideo = videos.find(
+    //     value => value.filename === receivedMsg.data.fileName
+    //   );
+    //   if (foundVideo) {
+    //     const clonedVideos = [...videos];
+    //     foundVideo.progress = receivedMsg.progress;
+    //     const indexOfFoundVideo = videos.indexOf(foundVideo);
+    //     clonedVideos[indexOfFoundVideo] = foundVideo;
+    //     setVideos(clonedVideos);
+    //   }
+    // };
     fetchVideos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <>
       <div className={s.wrapper}>
@@ -57,19 +66,21 @@ export const Home: React.FC = () => {
             />
             <AddIcon />
           </form>
-
           <div className={s.video__container}>
             <h2>My Videos</h2>
             <div className={s.videos}>
               {videos.map((value, index) => (
-                <Link to={`/videos/${value.hash}`} key={index}>
-                  <Card
-                    tags={value.tags}
-                    size={value.size}
-                    thumbnail={value.thumbnail}
-                    title={value.filename}
-                  />
-                </Link>
+                <Card
+                  tags={value.tags}
+                  size={value.size}
+                  hash={value.hash}
+                  key={index}
+                  thumbnail={value.thumbnail}
+                  title={value.filename}
+                  progress={
+                    progressBar?.hash === value.hash ? progressBar?.value : undefined
+                  }
+                />
               ))}
             </div>
           </div>

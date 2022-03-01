@@ -77,11 +77,11 @@ router.post(
     const response = await fetchPage(link);
     const fileInfo = scrape(response);
     if (!fileInfo) throw new NoDataError();
-    const videoExists = await prismaClient.video.findFirst({
-      where: { userId: user.id, magnetLink: fileInfo.magnetLink },
+    const userVideoExists = await prismaClient.video.findFirst({
+      where: { userId: user.id, magnetLink: fileInfo.magnetLink, link },
     });
 
-    if (videoExists)
+    if (userVideoExists)
       throw new BadRequestError("Video with this link already exists");
     const hash = randomUUID();
     const re = /dn=(?<link>.+?)\&/;
@@ -102,6 +102,7 @@ router.post(
         hash,
         thumbnail: fileInfo.thumbnail,
         tags: fileInfo.tags,
+        link,
         filename: fileName,
         path: filePath,
         jobId: String(newJob.id),
