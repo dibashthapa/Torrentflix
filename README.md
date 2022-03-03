@@ -22,7 +22,7 @@ npm run dev
 
 # Features
 
-- Can download videos from magnet link
+- Paste 1377x link and download videos
 - Stream downloaded videos
 - Realtime download progress for downloading videos
 
